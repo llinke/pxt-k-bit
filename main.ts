@@ -296,7 +296,7 @@ namespace k_Bit {
      */
     pins.setPull(DigitalPin.P2, PinPullMode.PullNone);
     pins.setPull(DigitalPin.P11, PinPullMode.PullNone);
-    //% block="$LR obstacle sensor "
+    //% block="$LR Obstacle Sensor "
     //% group="Sensor" weight=69
     export function obstacle(LR: MotorObs): number {
         let val;
@@ -322,41 +322,9 @@ namespace k_Bit {
         return val;
     }
     /**
-     * Ultrasonic sensor
-     */
-    const TRIG_PIN = DigitalPin.P14;
-    const ECHO_PIN = DigitalPin.P15;
-    pins.setPull(TRIG_PIN, PinPullMode.PullNone);
-    let lastTime = 0;
-    //% block="Ultrasonic"
-    //% group="Sensor" weight=67
-    export function ultra(): number {
-        //send trig pulse
-        pins.digitalWritePin(TRIG_PIN, 0)
-        control.waitMicros(2);
-        pins.digitalWritePin(TRIG_PIN, 1)
-        control.waitMicros(10);
-        pins.digitalWritePin(TRIG_PIN, 0)
-
-        // read echo pulse  max distance : 6m(35000us)
-        //2020-7-6 
-        // pins.pulseIn():This function has a bug and returns data with large errors.
-        let t = pins.pulseIn(ECHO_PIN, PulseValue.High, 35000);
-        let ret = t;
-
-        //Eliminate the occasional bad data
-        if (ret == 0 && lastTime != 0) {
-            ret = lastTime;
-        }
-        lastTime = t;
-        //2020-7-6
-        //It would normally divide by 58, because the pins.pulseIn() function has an error, so it's divided by 58
-        return Math.round(ret / 40);  
-    }
-    /**
      * photoresistance sensor
      */
-    //% block="photoresistor "
+    //% block="PhotoResistor "
     //% group="Sensor" weight=66
     export function PH(): number {
         return pins.analogReadPin(AnalogPin.P1);  
